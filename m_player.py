@@ -179,6 +179,7 @@ nextButton = tk.Button(
 )
 nextButton.pack(pady=15, in_=top, side="left")
 
+#adds the volume slider
 Volumelevel = tk.Scale(canvas,from_= 0, to_=100,
                         orient= tk.HORIZONTAL,
                         bg="#6433d6",
@@ -187,7 +188,7 @@ Volumelevel = tk.Scale(canvas,from_= 0, to_=100,
                         length=225,
                         command=volume
                         )
-Volumelevel.set(50)
+Volumelevel.set(50) #puts defalt value of slider to 50
 Volumelevel.pack(pady=15)
 #adds the add Button to the music player
 addButton = tk.Button(
