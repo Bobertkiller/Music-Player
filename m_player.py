@@ -11,15 +11,15 @@ canvas = tk.Tk()
 canvas.title("Music Player")
 canvas.geometry("600x800")
 canvas.config(bg="#6433d6")
-if platform.system() == "Windows":
-    rootpath = "%USERPROFILE%/Music"  # Windows path
-elif platform.system() == "Darwin":
+if platform.system() == "Windows": # Windows path
+    rootpath = os.path.join(os.path.expanduser("%USERPROFILE%"), "Music")
+elif platform.system() == "Darwin":  # Mac path, I think
     try:
-        rootpath = "~/Music"  # Mac path, I think
+        rootpath = os.path.join(os.path.expanduser("~"), "Music")
     except:
         print("Weird Fucking system Bro")
-elif platform.system() == "Linux":
-    rootpath = "~/Music"  # Linux path
+elif platform.system() == "Linux":  # Linux path
+    rootpath = os.path.join(os.path.expanduser("~"), "Music")
 pattern = "*.mp3"
 
 prev_img = tk.PhotoImage(file="Docs/assets/prev_img.png")
@@ -34,7 +34,9 @@ mixer.init()
 #It plays the selected music, and if pressed again while playing
 #It plays the music from the start
 def select(): 
-    label.config(text=listBox.get("anchor"))
+    text_d=listBox.get("anchor")
+    text_d = text_d.rsplit(".", 1)[0]
+    label.config(text=text_d)
     mixer.music.load(rootpath + "/" + listBox.get("anchor"))
     mixer.music.play()
     mixer.music.set_volume(Volumelevel.get() /100)
@@ -51,7 +53,9 @@ def play_next():
     next_song = listBox.curselection()
     next_song = next_song[0] + 1
     next_song_name = listBox.get(next_song)
+    next_song_name = next_song_name.rsplit(".", 1)[0]
     label.config(text=next_song_name)
+    next_song_name = listBox.get(next_song)
 
     mixer.music.load(rootpath + "/" + next_song_name)
     mixer.music.play()
@@ -66,7 +70,9 @@ def play_prev():
     prev_song = listBox.curselection()
     prev_song = prev_song[0] - 1
     prev_song_name = listBox.get(prev_song)
+    prev_song_name = prev_song_name.rsplit(".", 1)[0]
     label.config(text=prev_song_name)
+    prev_song_name = listBox.get(prev_song)
 
     mixer.music.load(rootpath + "/" + prev_song_name)
     mixer.music.play()

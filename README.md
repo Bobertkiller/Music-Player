@@ -27,9 +27,14 @@ This is a Python GUI music player (not feature-complete)
 |:---:|:---:|
 |☑ Sliding volume control|Download music with yt-dlp|
 
-|PEP8|Playback|
+|PEP8|GUI|
 |:---:|:---:|
-|Code fully PEP8 compliant|Play audio from video file|
+|Code fully PEP8 compliant|Make a decent GUI, just so it looks good|
+
+|Playback|
+|:---:|
+|Play audio from video file, and larget format compatibility like .wav or .webm|
+
 
 ## Installation
 
