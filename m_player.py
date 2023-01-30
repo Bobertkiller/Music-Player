@@ -107,6 +107,7 @@ prevButton = tk.Button(
     image=prev_img,
     bg="#6433d6",
     borderwidth=0,
+    height= 70,
     command=play_prev,
 )
 prevButton.pack(pady=15, in_=top, side="left")
@@ -117,6 +118,7 @@ stopButton = tk.Button(
     image=stop_img,
     bg="#6433d6",
     borderwidth=0,
+    height= 70,
     command=stop,
 )
 stopButton.pack(pady=15, in_=top, side="left")
@@ -127,6 +129,7 @@ playButton = tk.Button(
     image=play_img,
     bg="#6433d6",
     borderwidth=0,
+    height= 70,
     command=select,
 )
 playButton.pack(pady=15, in_=top, side="left")
@@ -137,6 +140,7 @@ pauseButton = tk.Button(
     image=pause_img,
     bg="#6433d6",
     borderwidth=0,
+    height= 70,
     command=pause_song,
 )
 pauseButton.pack(pady=15, in_=top, side="left")
@@ -147,6 +151,7 @@ nextButton = tk.Button(
     image=next_img,
     bg="#6433d6",
     borderwidth=0,
+    height= 70,
     command=play_next,
 )
 nextButton.pack(pady=15, in_=top, side="left")
