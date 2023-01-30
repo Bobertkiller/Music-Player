@@ -33,7 +33,7 @@ This is a Python GUI music player (not feature-complete)
 
 |Playback|
 |:---:|
-|Play audio from video file, and larget format compatibility like .wav or .webm|
+|Play audio from video file, and larger format compatibility like .wav or .webm|
 
 
 ## Installation
