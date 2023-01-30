@@ -25,7 +25,7 @@ This is a Python GUI music player (not feature-complete)
 
 |Volume|Music|
 |:---:|:---:|
-|Sliding volume control|Add song from file explorer|
+|☑ Sliding volume control|Download music with yt-dlp|
 
 |PEP8|Playback|
 |:---:|:---:|

@@ -37,11 +37,12 @@ def select():
     label.config(text=listBox.get("anchor"))
     mixer.music.load(rootpath + "/" + listBox.get("anchor"))
     mixer.music.play()
+    mixer.music.set_volume(Volumelevel.get() /100)
 
 #As the name suggests, this function stops the music from playing
 #And it clears the name of the previous song
 def stop():
-    mixer.music.stop()
+    mixer.music.fadeout(1250)
     listBox.select_clear("active")
     label.config(text="")
 
@@ -54,6 +55,7 @@ def play_next():
 
     mixer.music.load(rootpath + "/" + next_song_name)
     mixer.music.play()
+    mixer.music.set_volume(Volumelevel.get() /100)
 
     listBox.select_clear(0, "end")
     listBox.activate(next_song)
@@ -68,6 +70,7 @@ def play_prev():
 
     mixer.music.load(rootpath + "/" + prev_song_name)
     mixer.music.play()
+    mixer.music.set_volume(Volumelevel.get() /100)
 
     listBox.select_clear(0, "end")
     listBox.activate(prev_song)
@@ -92,8 +95,9 @@ def add_song():
 
 #This function is also a work in progress
 #I intend to make it a slider that controls the volume
-def volume():
-    pass
+def volume(x):
+    mixer.music.set_volume(Volumelevel.get() /100)
+    curent_volume = mixer.music.get_volume()
 
 
 listBox = tk.Listbox(
@@ -169,6 +173,16 @@ nextButton = tk.Button(
 )
 nextButton.pack(pady=15, in_=top, side="left")
 
+Volumelevel = tk.Scale(canvas,from_= 0, to_=100,
+                        orient= tk.HORIZONTAL,
+                        bg="#6433d6",
+                        borderwidth=0,
+                        resolution=1,
+                        length=225,
+                        command=volume
+                        )
+Volumelevel.set(50)
+Volumelevel.pack(pady=15)
 #adds the add Button to the music player
 addButton = tk.Button(
     canvas,
