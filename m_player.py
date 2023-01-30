@@ -203,7 +203,6 @@ addButton.pack(pady=15, side="left")
 #Generates the list of song
 #Reads the file name and format(mp3)
 #Inserts the songs with the correct format to the list of songs
-#In alphabetical order 
 for root, dirs, files in os.walk(rootpath):
     for filename in fnmatch.filter(files, pattern):
         listBox.insert("end", filename)
