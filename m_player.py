@@ -30,46 +30,51 @@ next_img = tk.PhotoImage(file="Docs/assets/next_img.png")
 
 mixer.init()
 
-
-def select():
+#This function is the Blood of the music player
+#It plays the selected music, and if pressed again while playing
+#It plays the music from the start
+def select(): 
     label.config(text=listBox.get("anchor"))
-    mixer.music.load(rootpath + "\\" + listBox.get("anchor"))
+    mixer.music.load(rootpath + "/" + listBox.get("anchor"))
     mixer.music.play()
 
-
+#As the name suggests, this function stops the music from playing
+#And it clears the name of the previous song
 def stop():
     mixer.music.stop()
     listBox.select_clear("active")
+    label.config(text="")
 
-
+#This function plays the next song of the listed songs
 def play_next():
     next_song = listBox.curselection()
     next_song = next_song[0] + 1
     next_song_name = listBox.get(next_song)
     label.config(text=next_song_name)
 
-    mixer.music.load(rootpath + "\\" + next_song_name)
+    mixer.music.load(rootpath + "/" + next_song_name)
     mixer.music.play()
 
     listBox.select_clear(0, "end")
     listBox.activate(next_song)
     listBox.select_set(next_song)
 
-
+#This function plays the previous song of the listed songs
 def play_prev():
     prev_song = listBox.curselection()
     prev_song = prev_song[0] - 1
     prev_song_name = listBox.get(prev_song)
     label.config(text=prev_song_name)
 
-    mixer.music.load(rootpath + "\\" + prev_song_name)
+    mixer.music.load(rootpath + "/" + prev_song_name)
     mixer.music.play()
 
     listBox.select_clear(0, "end")
     listBox.activate(prev_song)
     listBox.select_set(prev_song)
 
-
+#This function pauses the music and when pressed again
+#Resumes the music from where it was paused
 def pause_song():
     if pauseButton["text"] == "Pause":
         mixer.music.pause()
@@ -78,12 +83,15 @@ def pause_song():
         mixer.music.unpause()
         pauseButton["text"] = "Pause"
 
-
+#This function is still a work in progress
+#But i intend to make it possible to download music
+#To add it to the list
 def add_song():
     filepath = filedialog.askopenfilename()
     shutil.copy2(filepath, rootpath)
 
-
+#This function is also a work in progress
+#I intend to make it a slider that controls the volume
 def volume():
     pass
 
@@ -101,6 +109,7 @@ label.pack(pady=15)
 top = tk.Frame(canvas, bg="#6433d6")
 top.pack(padx=10, pady=5, anchor="center")
 
+#adds the prev Button to the music player
 prevButton = tk.Button(
     canvas,
     text="Prev",
@@ -112,6 +121,7 @@ prevButton = tk.Button(
 )
 prevButton.pack(pady=15, in_=top, side="left")
 
+#adds the stop Button to the music player
 stopButton = tk.Button(
     canvas,
     text="Stop",
@@ -123,6 +133,7 @@ stopButton = tk.Button(
 )
 stopButton.pack(pady=15, in_=top, side="left")
 
+#adds the play Button to the music player
 playButton = tk.Button(
     canvas,
     text="Play",
@@ -134,6 +145,7 @@ playButton = tk.Button(
 )
 playButton.pack(pady=15, in_=top, side="left")
 
+#adds the pause Button to the music player
 pauseButton = tk.Button(
     canvas,
     text="Pause",
@@ -145,6 +157,7 @@ pauseButton = tk.Button(
 )
 pauseButton.pack(pady=15, in_=top, side="left")
 
+#adds the next Button to the music player
 nextButton = tk.Button(
     canvas,
     text="Next",
@@ -156,6 +169,7 @@ nextButton = tk.Button(
 )
 nextButton.pack(pady=15, in_=top, side="left")
 
+#adds the add Button to the music player
 addButton = tk.Button(
     canvas,
     text="Add song",
@@ -165,8 +179,13 @@ addButton = tk.Button(
 )
 addButton.pack(pady=15, side="left")
 
+#Generates the list of song
+#Reads the file name and format(mp3)
+#Inserts the songs with the correct format to the list of songs
+#In alphabetical order 
 for root, dirs, files in os.walk(rootpath):
     for filename in fnmatch.filter(files, pattern):
         listBox.insert("end", filename)
 
+#Loops the code so the Music Player can function                  
 canvas.mainloop()
