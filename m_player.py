@@ -1,3 +1,4 @@
+import random
 import fnmatch
 import os
 import platform
@@ -6,6 +7,8 @@ import tkinter as tk
 from tkinter import filedialog
 
 from pygame import mixer
+
+
 
 canvas = tk.Tk()
 canvas.title("Music Player")
@@ -20,13 +23,28 @@ elif platform.system() == "Darwin":  # Mac path, I think
         print("Weird Fucking system Bro")
 elif platform.system() == "Linux":  # Linux path
     rootpath = os.path.join(os.path.expanduser("~"), "Music")
-pattern = "*.mp3"
+    
+    
+audio_extensions = ['.mp3', '.wav', '.ogg', '.flac', '.m4a', '.wma', '.aac', '.alac', '.aiff', '.opus']
+
+def is_audio_file(file):
+    return os.path.splitext(file)[1] in audio_extensions
+
+def load_songs():
+    for root, dirnames, filenames in os.walk(rootpath):
+        for filename in filenames:
+            if is_audio_file(filename):
+                listBox.insert(tk.END, filename)
 
 prev_img = tk.PhotoImage(file="Docs/assets/prev_img.png")
 stop_img = tk.PhotoImage(file="Docs/assets/stop_img.png")
 play_img = tk.PhotoImage(file="Docs/assets/play_img.png")
 pause_img = tk.PhotoImage(file="Docs/assets/pause_img.png")
 next_img = tk.PhotoImage(file="Docs/assets/next_img.png")
+shuffle_img = tk.PhotoImage(file="Docs/assets/shuffle_img.png")
+repeat_img = tk.PhotoImage(file="Docs/assets/repeat_img.png")
+wipe_img = tk.PhotoImage(file="Docs/assets/wipe_img.png")
+load_img = tk.PhotoImage(file="Docs/assets/load_img.png")
 
 mixer.init()
 
@@ -34,12 +52,20 @@ mixer.init()
 #It plays the selected music, and if pressed again while playing
 #It plays the music from the start
 def select(): 
-    text_d=listBox.get("anchor")
-    text_d = text_d.rsplit(".", 1)[0]
-    label.config(text=text_d)
-    mixer.music.load(rootpath + "/" + listBox.get("anchor"))
+    global playlist
+    if shuffleButton['text'] == 'Shuffle':
+        selected_song = rootpath + '/' + listBox.get("anchor")
+    else:
+        if not playlist:
+            playlist = list(listBox.get(0, tk.END))
+        selected_song = rootpath + '/' + playlist.pop(0)
+        listBox.delete(0)
+        listBox.insert(tk.END, *playlist)
+
+    mixer.music.load(selected_song)
     mixer.music.play()
-    mixer.music.set_volume(Volumelevel.get() /100)
+    mixer.music.set_volume(Volumelevel.get() / 100)
+    label.config(text=listBox.get("anchor").rsplit(".", 1)[0])
 
 #As the name suggests, this function stops the music from playing
 #And it clears the name of the previous song
@@ -48,6 +74,10 @@ def stop():
     listBox.select_clear("active")
     label.config(text="")
 
+def clear_playlist():
+    stop()
+    listBox.delete(0, tk.END)
+    
 #This function plays the next song of the listed songs
 def play_next():
     next_song = listBox.curselection()
@@ -82,6 +112,22 @@ def play_prev():
     listBox.activate(prev_song)
     listBox.select_set(prev_song)
 
+playlist = []
+
+def shuffle_playlist():
+    global playlist
+    playlist = list(listBox.get(0, tk.END))
+    random.shuffle(playlist)
+    listBox.delete(0, tk.END)
+    for song in playlist:
+        listBox.insert(tk.END, song)
+
+def toggle_repeat():
+    if mixer.music.get_busy():
+        mixer.music.stop()
+    mixer.music.play(-1 if mixer.music.get_volume() else 0, 0)
+    
+
 #This function pauses the music and when pressed again
 #Resumes the music from where it was paused
 def pause_song():
@@ -92,12 +138,17 @@ def pause_song():
         mixer.music.unpause()
         pauseButton["text"] = "Pause"
 
-#This function is still a work in progress
-#But i intend to make it possible to download music
-#To add it to the list
 def add_song():
-    filepath = filedialog.askopenfilename()
-    shutil.copy2(filepath, rootpath)
+    file_path = filedialog.askopenfilename(filetypes=[("Audio Files", "*.mp3;*.wav;*.ogg;*.flac;*.m4a;*.wma;*.aac;*.alac;*.aiff;*.opus")])
+    if file_path:
+        # Check if the selected file is an audio file
+        if not is_audio_file(file_path):
+            messagebox.showerror("Error", "Selected file is not an audio file.")
+            return
+        # Add the selected file to the listbox
+        filename = os.path.basename(file_path)
+        listBox.insert(tk.END, filename)
+
 
 #This function is also a work in progress
 #I intend to make it a slider that controls the volume
@@ -117,6 +168,7 @@ label = tk.Label(
 label.pack(pady=15)
 
 top = tk.Frame(canvas, bg="#6433d6")
+
 top.pack(padx=10, pady=5, anchor="center")
 
 #adds the prev Button to the music player
@@ -142,6 +194,31 @@ stopButton = tk.Button(
     command=stop,
 )
 stopButton.pack(pady=15, in_=top, side="left")
+
+
+clearButton = tk.Button(
+    canvas,
+    text="Clear Playlist",
+    image=wipe_img,
+    bg="#6433d6",
+    borderwidth=0,
+    height= 70,
+    command=clear_playlist,
+)
+clearButton.pack(pady=15, in_=top, side="left")
+
+
+loadButton = tk.Button(
+    canvas,
+    text="Load Music",
+    image=load_img,
+    bg="#6433d6",
+    borderwidth=0,
+    height= 70,
+    command=load_songs,
+)
+loadButton.pack(pady=15, in_=top, side="left")
+
 
 #adds the play Button to the music player
 playButton = tk.Button(
@@ -179,6 +256,28 @@ nextButton = tk.Button(
 )
 nextButton.pack(pady=15, in_=top, side="left")
 
+shuffleButton = tk.Button(
+    canvas,
+    text="Shuffle",
+    image=shuffle_img,
+    bg="#6433d6",
+    borderwidth=0,
+    height=70,
+    command=shuffle_playlist,
+)
+shuffleButton.pack(pady=15, in_=top, side="left")
+
+repeatButton = tk.Button(
+    canvas,
+    text="Repeat",
+    image=repeat_img,
+    bg="#6433d6",
+    borderwidth=0,
+    height=70,
+    command=toggle_repeat,
+)
+repeatButton.pack(pady=15, in_=top, side="left")
+
 #adds the volume slider
 Volumelevel = tk.Scale(canvas,from_= 0, to_=100,
                         orient= tk.HORIZONTAL,
@@ -190,6 +289,7 @@ Volumelevel = tk.Scale(canvas,from_= 0, to_=100,
                         )
 Volumelevel.set(50) #puts defalt value of slider to 50
 Volumelevel.pack(pady=15)
+
 #adds the add Button to the music player
 addButton = tk.Button(
     canvas,
@@ -203,9 +303,7 @@ addButton.pack(pady=15, side="left")
 #Generates the list of song
 #Reads the file name and format(mp3)
 #Inserts the songs with the correct format to the list of songs
-for root, dirs, files in os.walk(rootpath):
-    for filename in fnmatch.filter(files, pattern):
-        listBox.insert("end", filename)
+load_songs()
 
 #Loops the code so the Music Player can function                  
 canvas.mainloop()
