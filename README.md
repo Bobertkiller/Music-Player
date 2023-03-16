@@ -19,17 +19,17 @@
 <!-- Uncomment when a release is made -->
 
 ## About the project
-This is a Python GUI music player (not feature-complete)
+This is a GUI music player made with C (not feature-complete)
 
 ## Future Goals
 
 |Volume|Music|
 |:---:|:---:|
-|☑ Sliding volume control|Download music with yt-dlp|
+| Sliding volume control|Download music with yt-dlp|
 
-|PEP8|GUI|
+|Cs50|GUI|
 |:---:|:---:|
-|Code fully PEP8 compliant|Make a decent GUI, just so it looks good|
+|Code fully Cs50 compliant|Make a decent GUI, just so it looks good|
 
 |Playback|
 |:---:|
@@ -38,27 +38,24 @@ This is a Python GUI music player (not feature-complete)
 
 ## Installation
 
-#### If you have [Chocolatey](https://chocolatey.org/) installed, run `choco install python` and skip steps 1.
+#### You can read the code anytime before executing the `.exe` files just so you know what is going on.
 
-1) Download the latest version of [Python](https://www.python.org/downloads/), make sure it is added to the PATH. (This is an option on installation.)
+1) Download the [source code](https://github.com/Bobertkiller/Music-Player/archive/refs/heads/main.zip).
 
-2) Download the [source code](https://github.com/Bobertkiller/Music-Player/archive/refs/heads/main.zip).
+2) Extract **all** files to an empty folder.
 
-3) Extract **all** files to an empty folder.
+3) Open `Dependencies.exe`.
 
-4) Open a terminal within the folder.
+4) Then you can run `music player.exe`
 
-5) `pip install -r requirements.txt`
-
-6) `main.py`
 
 
 <!-- [downloads-shield]: https://img.shields.io/github/downloads/Bobertkiller/Music-Player/total?style=for-the-badge&logo=github
 [downloads-url]: https://github.com/Bobertkiller/Music-Player/releases/latest -->
 <!-- Uncomment when a release is made -->
 
-[language-shield]: https://img.shields.io/github/languages/top/Bobertkiller/Music-Player?logo=python&logoColor=yellow&style=for-the-badge
-[language-url]: https://www.python.org/
+[language-shield]: https://img.shields.io/github/languages/top/Bobertkiller/Music-Player?logo=C&logoColor=blue&style=for-the-badge
+[language-url]: https://www.iso.org/standard/74528.html
 
 [license-shield]: https://img.shields.io/github/license/Bobertkiller/Music-Player?style=for-the-badge
 [license-url]: https://github.com/Bobertkiller/Music-Player/blob/main/LICENSE
